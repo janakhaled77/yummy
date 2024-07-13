@@ -1,0 +1,70 @@
+.first{
+    width: 60px;
+}
+.nav-tab{
+    width: 0;
+}
+.sidenav{
+    z-index: 999;
+}
+.pointer{
+    cursor: pointer;
+}
+.meal-layer{
+    width: 100%;
+    height: 100%;
+    background-color: #f9f6f6ca;
+    top: 100%;
+    transition: ease .5s;
+}
+
+.meal:hover .meal-layer{
+    top: 0;
+}
+
+.alert {
+    display: none;
+}
+.alert-danger {
+    color: red;
+}
+
+/* Add any custom styles needed */
+.meal-card {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.meal-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: rgba(23, 23, 23, 0.588);
+    color: #000000;
+    opacity: 0;
+    transition: height 0.5s ease, opacity 0.5s ease;
+}
+
+.meal-card:hover .meal-overlay {
+    height: 100%;
+    opacity: 1;
+}
+
+.meal-overlay-content {
+    padding: 1rem;
+    box-sizing: border-box;
+    color: #000000;
+    text-align: center;
+}
+
+.meal-overlay h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0;
+    color: #000000;
+
+}
