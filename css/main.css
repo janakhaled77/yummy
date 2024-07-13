@@ -43,7 +43,7 @@
     left: 0;
     width: 100%;
     height: 0;
-    background-color: rgba(23, 23, 23, 0.588);
+    background-color: #ffffff86;
     color: #000000;
     opacity: 0;
     transition: height 0.5s ease, opacity 0.5s ease;
@@ -66,5 +66,4 @@
     font-weight: bold;
     margin-bottom: 0;
     color: #000000;
-
 }
