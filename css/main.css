@@ -1,11 +1,14 @@
 .first{
     width: 60px;
+    background-color: #f1f1f1;
+    z-index: 999;
 }
 .nav-tab{
     width: 0;
 }
 .sidenav{
-    z-index: 999;
+    background-color: #262a2d; /* Grey background color */
+    z-index: 9999;
 }
 .pointer{
     cursor: pointer;

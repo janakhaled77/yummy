@@ -6,15 +6,34 @@
 
 
     function OpenNav() {
-        $(".nav-tab").animate({ width: '100%' }, 500);
+        $(".nav-tab").animate({ width: '100%' }, 500, function() {
+          showListAnimation();
+        });
         $(".menu").removeClass("fa-bars").addClass("fa-x");
-    }
-
-    function CloseNav() {
+      }
+      
+      function CloseNav() {
         $(".nav-tab").animate({ width: '0' }, 500);
         $(".menu").removeClass("fa-x").addClass("fa-bars");
-    }
-
+      }
+      
+      function showListAnimation() {
+        $(".links .list-unstyled li").each(function(index) {
+          $(this).css({
+            position: "relative",top: "20px",opacity: "0"}).animate({ top: "0",opacity: "1"
+          }, 900, "swing", function() {
+            if (index === $(".links .list-unstyled li").length - 1) {
+              // Animation complete
+            }
+          });
+        });
+      }
+      
+    
+      
+      $(".categories, .Ingredients").click(function() {
+        showListAnimation();
+      });
     async function getCategories() {
         rowData.innerHTML = "";
         contactus.innerHTML="";
@@ -351,56 +370,111 @@ function displayMeals(meals) {
 displaySearch();
 
 
-function displayContact() {
+function inputsValidation() {
+    // Get input field values
+    const name = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const phone = document.getElementById('phoneInput').value.trim();
+    const age = document.getElementById('ageInput').value.trim();
+    const password = document.getElementById('passwordInput').value.trim();
+    const repassword = document.getElementById('repasswordInput').value.trim();
+  
+    // Regular expressions for validation
+    const nameRegex = /^[a-zA-Z ]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{11}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  
+    // Validation flags
+    let isNameValid = nameRegex.test(name);
+    let isEmailValid = emailRegex.test(email);
+    let isPhoneValid = phoneRegex.test(phone);
+    let isAgeValid = !isNaN(age) && age >= 12; // Sample age validation, adjust as needed
+    let isPasswordValid = passwordRegex.test(password);
+    let isRepasswordValid = password === repassword;
+  
+    // Show/hide alerts based on validation
+    toggleAlert('nameAlert', isNameValid);
+    toggleAlert('emailAlert', isEmailValid);
+    toggleAlert('phoneAlert', isPhoneValid);
+    toggleAlert('ageAlert', isAgeValid);
+    toggleAlert('passwordAlert', isPasswordValid);
+    toggleAlert('repasswordAlert', isRepasswordValid);
+  
+    // Enable/disable submit button
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = !(isNameValid && isEmailValid && isPhoneValid && isAgeValid && isPasswordValid && isRepasswordValid);
+  }
+  
+  function displayContact() {
+    rowData.innerHTML = "";
     defaultSection.innerHTML="";
     SearchSection.innerHTML="";
-    rowData.innerHTML="";
-    let cartoona = "";
-        cartoona += `
-                    <div class="row g-4" >
-                    <div class="col-md-6">
-                        <input id="nameInput" onkeyup="inputsValidation()" type="text" class="form-control" placeholder="Enter Your Name" monica-translate-exclude-el="m" data-has-listeners="true" data-listener-added_65c7981b="true">
-                        <div id="nameAlert" class="alert alert-danger w-100 mt-2 d-block">
-                            Special characters and numbers not allowed
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <input id="emailInput" onkeyup="inputsValidation()" type="email" class="form-control " placeholder="Enter Your Email" monica-translate-exclude-el="m" data-has-listeners="true" data-listener-added_65c7981b="true">
-                        <div id="emailAlert" class="alert alert-danger w-100 mt-2 d-block">
-                            Email not valid *exemple@yyy.zzz
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <input id="phoneInput" onkeyup="inputsValidation()" type="text" class="form-control " placeholder="Enter Your Phone" monica-translate-exclude-el="m" data-has-listeners="true" data-listener-added_65c7981b="true">
-                        <div id="phoneAlert" class="alert alert-danger w-100 mt-2 d-block">
-                            Enter valid Phone Number
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <input id="ageInput" onkeyup="inputsValidation()" type="number" class="form-control " placeholder="Enter Your Age" monica-translate-exclude-el="m" data-has-listeners="true" data-listener-added_65c7981b="true">
-                        <div id="ageAlert" class="alert alert-danger w-100 mt-2 d-none">
-                            Enter valid age
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <input id="passwordInput" onkeyup="inputsValidation()" type="password" class="form-control " placeholder="Enter Your Password" monica-translate-exclude-el="m" data-has-listeners="true">
-                        <div id="passwordAlert" class="alert alert-danger w-100 mt-2 d-none">
-                            Enter valid password Minimum eight characters, at least one letter and one number:
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <input id="repasswordInput" onkeyup="inputsValidation()" type="password" class="form-control " placeholder="Repassword" monica-translate-exclude-el="m" data-has-listeners="true" data-listener-added_65c7981b="true">
-                        <div id="repasswordAlert" class="alert alert-danger w-100 mt-2 d-none">
-                            Enter valid repassword 
-                        </div>
-                    </div>
-                </div>
-                <button id="submitBtn" disabled="true" class="btn btn-outline-danger px-2 mt-3">Submit</button>
-
-                `;
-                contactus.innerHTML = cartoona;
+    const contactus = document.querySelector('.contactus');
+    contactus.innerHTML = ""; // Clear any existing content
+    
+    let cartoona = `
+      <div class="container">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <input id="nameInput" onkeyup="inputsValidation()" type="text" class="form-control" placeholder="Enter Your Name">
+          <div id="nameAlert" class="alert alert-danger w-100 mt-2 d-block">
+            Special characters and numbers not allowed
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input id="emailInput" onkeyup="inputsValidation()" type="email" class="form-control" placeholder="Enter Your Email">
+          <div id="emailAlert" class="alert alert-danger w-100 mt-2 d-block">
+            Email not valid *exemple@yyy.zzz
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input id="phoneInput" onkeyup="inputsValidation()" type="text" class="form-control" placeholder="Enter Your Phone">
+          <div id="phoneAlert" class="alert alert-danger w-100 mt-2 d-block">
+            Enter valid Phone Number
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input id="ageInput" onkeyup="inputsValidation()" type="number" class="form-control" placeholder="Enter Your Age">
+          <div id="ageAlert" class="alert alert-danger w-100 mt-2 d-none">
+            Enter valid age
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input id="passwordInput" onkeyup="inputsValidation()" type="password" class="form-control" placeholder="Enter Your Password">
+          <div id="passwordAlert" class="alert alert-danger w-100 mt-2 d-none">
+            Enter valid password Minimum eight characters, at least one letter and one number:
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input id="repasswordInput" onkeyup="inputsValidation()" type="password" class="form-control" placeholder="Repassword">
+          <div id="repasswordAlert" class="alert alert-danger w-100 mt-2 d-none">
+            Enter valid repassword 
+          </div>
+        </div></div>
+      
+      <button id="submitBtn" disabled class="btn-center btn btn-outline-danger px-2 mt-3">Submit</button></div>
+    `;
+    
+    contactus.innerHTML = cartoona;
+  
+    // Initially run validation to ensure initial state is correct
+    inputsValidation();
+  }
+  
+  // Function to toggle alert visibility
+  function toggleAlert(id, isValid) {
+    const alert = document.getElementById(id);
+    if (isValid) {
+      alert.classList.add('d-none');
+    } else {
+      alert.classList.remove('d-none');
     }
-
+  }
+  
+  // Example of how to initialize the displayContact function
+  displayContact();
+  
 
 // Call displayContact to show the form
 displayContact();
